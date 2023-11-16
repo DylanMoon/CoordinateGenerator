@@ -16,8 +16,10 @@ public sealed class BacklashGenerator : IMotion
     public double GoToPosition(double position) =>
         CurrentActualPosition = _wrapped.GoToPosition(position) + GetBacklash(DirectionChanged);
 
+    //TODO: review Normal Distribution equation and apply it.. not w/e this is
     private double GenerateNormalRandom() => Math.Sqrt(-2d * Math.Log(1d - _random.NextDouble())) *
-                                             Math.Sin(2d * Math.PI * (1d - _random.NextDouble()));
+                                             Math.Sin(2d * Math.PI * (1d - _random.NextDouble())) * 
+                                             _random.NextDouble();
 
     public double GetBacklash(bool dirChange) =>
         !dirChange ? 0d
