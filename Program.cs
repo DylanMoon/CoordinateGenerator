@@ -21,7 +21,8 @@ var path = GetNextPath();
 sw.Reset();
 sw.Start();
 var stream = File.OpenWrite(path);
-stream.Write("commanded position, signed delta, theoretical position, actual position, error\n"u8);
+// stream.Write("commanded position, signed delta, theoretical position, actual position, error\n"u8);
+stream.Write("commanded position, theoretical position, actual position, error\n"u8);
 foreach (var pos in Enumerable.Range(0, 15000).Select(_=>cg.GetNext()))
 {
     var commanded = pos;
@@ -29,7 +30,8 @@ foreach (var pos in Enumerable.Range(0, 15000).Select(_=>cg.GetNext()))
     var actual = bs.GoToPosition(commanded);
     var theoretical = bs.CurrentTheoreticalPosition;
     var dirChange = bs.DirectionChanged;
-    stream.Write(Encoding.UTF8.GetBytes($"{commanded}, {(dirChange ? "-" : "")}{Math.Round(Math.Abs(startPoint - theoretical), 5)}, {Math.Round(theoretical, 5)},{Math.Round(actual,5)},{Math.Round(Math.Abs(actual) - Math.Abs(commanded), 5)}\n"));
+    // stream.Write(Encoding.UTF8.GetBytes($"{commanded}, {(dirChange ? "-" : "")}{Math.Round(Math.Abs(startPoint - theoretical), 5)}, {Math.Round(theoretical, 5)},{Math.Round(actual,5)},{Math.Round(Math.Abs(actual) - Math.Abs(commanded), 5)}\n"));
+    stream.Write(Encoding.UTF8.GetBytes($"{commanded}, {Math.Round(theoretical, 5)},{Math.Round(actual,5)},{Math.Round(Math.Abs(actual) - Math.Abs(commanded), 5)}\n"));
     // Console.WriteLine($"commanded: {commanded}, theoretical: {theoretical}, actual: {actual}, error: {Math.Round(Math.Abs(actual) - Math.Abs(commanded), 5)}\n");
 }
 
